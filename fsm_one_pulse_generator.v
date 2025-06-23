@@ -63,54 +63,52 @@ endmodule
 
 `timescale 1ns / 1ps
 
+//----------------------------------------------------------------//
+
 module testbench;
     reg clk, din, reset;
     wire dout;
 
     monostable m1 (.clk(clk), .din(din), .reset(reset), .dout(dout));
 
-    // Clock generation: 100 MHz (10 ns period)
     initial begin
         clk = 0;
         forever #5 clk = ~clk;
     end
 
-    // Stimulus
     initial begin
-        // Initialize
         reset = 1;
         din = 0;
-        #13 reset = 0; // Deassert reset after 13 ns
+        #13 reset = 0; 
 
-        // Test Case 1: Single pulse
-        #5 din = 1;    // Rising edge at 18 ns
-        #50 din = 0;   // Falling edge at 68 ns
-        #50;           // Wait to return to idle
+        //Single pulse
+        #5 din = 1;    
+        #50 din = 0; 
+        #50;        
 
-        // Test Case 2: Held high (retriggering test)
-        #5 din = 1;    // Rising edge at 123 ns
-        #100;          // Hold high for 100 ns
-        #5 din = 0;    // Falling edge at 228 ns
-        #50;           // Wait to return to idle
+        // Held high 
+        #5 din = 1;  
+        #100;          
+        #5 din = 0;   
+        #50;           
 
-        // Test Case 3: Rapid toggling
-        #5 din = 1;    // Rising edge at 283 ns
-        #20 din = 0;   // Falling edge at 303 ns
-        #10 din = 1;   // Rising edge at 313 ns
-        #50 din = 0;   // Falling edge at 363 ns
-        #50;           // Wait to return to idle
+        // Rapid toggling
+        #5 din = 1;    
+        #20 din = 0;  
+        #10 din = 1;  
+        #50 din = 0;   
+        #50;           
 
-        // Test Case 4: Reset during pulse
-        #5 din = 1;    // Rising edge at 418 ns
-        #20 reset = 1; // Reset at 438 ns
-        #13 reset = 0; // Deassert reset at 451 ns
-        #50 din = 0;   // Falling edge at 501 ns
-        #50;           // Wait
+        // Reset during pulse
+        #5 din = 1;    
+        #20 reset = 1; 
+        #13 reset = 0;
+        #50 din = 0;   
+        #50;           
 
-        #100 $finish;  // End simulation at 651 ns
+        #100 $finish;  
     end
 
-    // Monitor signals
     initial begin
         $monitor("Time=%0t ns reset=%b din=%b dout=%b state=%b delay_counter=%d dcounter=%d", 
                  $time, reset, din, dout, m1.current_state, m1.delay_counter, m1.dcounter);

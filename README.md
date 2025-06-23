@@ -193,7 +193,7 @@ Below is the simulation waveform, showing inputs clk, din, reset, and outputs do
 
 Below is the console output from my testbench simulation.
 
-![Uploading Screenshot 2025-06-23 192151.png…]()
+![Screenshot 2025-06-23 192151](https://github.com/user-attachments/assets/790ff67d-a198-4d30-804b-39a74b84f47f)
 
 
 
